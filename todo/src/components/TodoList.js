@@ -1,42 +1,40 @@
-import React, { useState } from 'react'
-import '../styles/TodoList.css'
-import { useTodo } from '../hooks'
+import React, { useEffect, useState } from 'react'
+import '../styles/TodoList.css';
+import { useTodo } from "../hooks"
 
+export default () => {
+    const { todos, getTodos, addTodo, deleteTodo } = useTodo()
+    const [listText, setListText] = useState('')
 
-
-function TodoList () {
-    const [todo, setTodo] = useState('')
-    const { todos, addTodo, removeTodo } = useTodo()
- 
-
-    function handleSubmit(e) {
+    const handleSubmit = (e) => {
         e.preventDefault()
-        addTodo(todo)
+        addTodo(listText)
+        setListText('')
     }
 
+    useEffect(() => {
+        getTodos()
+    }, [])
     return (
-        <div className="TodoList">
-            <h1>todos</h1>
+        <div className="todo-container">
             <form onSubmit={handleSubmit}>
-                <input 
-                onChange={(e) => setTodo(e.target.value)}
-                placeholder="What needs to be done?"
+                <input
+                    type="text"
+                    value={listText}
+                    onChange={(e) => setListText(e.target.value)}
                 />
             </form>
             <ul>
-                {todos.map(todo => {
+                {todos.map(list => {
                     return (
-                    <li>
-                       <span>{todo.text}</span> 
-                        <button onClick={() => removeTodo(todo.id)}>
-                            </button>
-                            </li>
+                        <li key={list.id}>
+                            {list.text}
+                            <button onClick={() => deleteTodo(list.id)}>X</button>
+                        </li>
                     )
                 })}
+
             </ul>
         </div>
     )
-
-}
-
-export default TodoList
+};

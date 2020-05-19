@@ -1,3 +1,7 @@
-.TodoList {
-    margin: 50px;
+.todo-container {
+    margin: 200px;
+}
+
+.todo-container li {
+    list-style: none;
 }

@@ -1,69 +1,69 @@
 // 1. imports
-import { useEffect } from "react"
+import axios from 'axios'
 import { useSelector, useDispatch } from "react-redux"
 
 // 2. action definitions
-const ADD_TODO = 'todo/ADD_TODO'
-const REMOVE_TODO = 'todo/REMOVE_TODO'
+const ADD_TODO = "todos/ADD_TODO"
+
 
 // 3. initial state
 const initialState = {
-    todos: []
+  todos: []
 }
 
-const makeID = function () {
-    let id = 0;
-    return () => id++;
-}
-
-const id = makeID()
 // 4. reducer
 export default (state = initialState, action) => {
-    switch (action.type) {
-        case ADD_TODO:
-            return {
-                ...state,
-                todos:
-                    [...state.todos,
-                    {
-                        id: todos.lenght,
-                        text: action.payload,
-                        status: 'incomplete'
-                    }
-                    ]
-            }
-        case REMOVE_TODO:
-            return {
-                ...state,
-                todos: state.todos.filter(todo => action.payload !== todo.id)
-            }
-        default:
-            return state
-    }
+  switch (action.type) {
+    case ADD_TODO:
+      return { ...state, todos: action.payload }
+    default:
+      return state
+  }
 }
 
 // 5. action creators
-function addTheTodo(text) {
-    return {
-        type: ADD_TODO,
-        payload: text
+
+function getTheTodo() {
+  return dispatch => {
+    axios.get('http://localhost:3001/todos').then(resp => {
+        dispatch({
+            type: ADD_TODO,
+            payload: resp.data
+        })
+    })
+  }
+}
+
+function postTodo(text) {
+    return dispatch => {
+        axios.post('http://localhost:3001/todos', {text, status: 'active'}).then(resp => {
+            dispatch(getTheTodo())
+
+    })
+      
     }
 }
 
-function removeTheTodo(id) {
-    return {
-        type: REMOVE_TODO,
-        payload: text
+function deleteTheTodo(id) {
+    return dispatch => {
+        axios.delete('http://localhost:3001/todos', + id).then(resp => {
+            dispatch(getTheTodo())
+
+    })
+      
     }
 }
+
 
 
 // 6. custom hook
 export function useTodo() {
-    const dispatch = useDispatch()
-    const todos = useSelector(appState => appState.todoState.todos)
+  const dispatch = useDispatch()
+  const todos = useSelector(appState => appState.todoState.todos)
 
-    const addTodo = (text) => dispatch(addTheTodo(text))
-    const removeTodo = (id) => dispatch(addTheTodo(id))
-    return { todos, addTodo, removeTodo }
+  const getTodos = () => dispatch(getTheTodo())
+const addTodo = (text) => dispatch(postTodo(text))
+const deleteTodo = (text) => dispatch(deleteTheTodo(text))
+
+  return { todos, getTodos, addTodo, deleteTodo }
 }

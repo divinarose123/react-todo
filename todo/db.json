@@ -1,14 +1,34 @@
 {
-    "todos": [
-        {
-            "id": 1,
-            "text": "todo 1",
-            "status": "active"
-        },
-        {
-            "id": 2,
-            "text": "todo 2",
-            "status": "completed"
-        }
-    ]
+  "todos": [
+    {
+      "id": 1,
+      "text": "list 1",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "text": "list 2",
+      "status": "completed"
+    },
+    {
+      "id": 2,
+      "text": "list 3",
+      "status": "All"
+    },
+    {
+      "text": "ad",
+      "status": "active",
+      "id": 3
+    },
+    {
+      "text": "you",
+      "status": "active",
+      "id": 4
+    },
+    {
+      "text": "suck",
+      "status": "active",
+      "id": 5
+    }
+  ]
 }
